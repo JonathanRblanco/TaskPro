@@ -1,0 +1,73 @@
+services:
+
+  frontend:
+    build:
+      context: ./FrontEnd
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:5000/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  # ── Backend ─────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./BackEnd
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      ConnectionStrings__SqlServer: >
+        Server=sqlserver,1433;Database=TaskPro;
+        User Id=sa;Password=TaskPro_Password_123;
+        TrustServerCertificate=True
+
+      MongoDB__ConnectionString: mongodb://mongodb:27017
+      MongoDB__DatabaseName: TaskProDb
+
+      Jwt__Secret: "HJBDJBASDHASJVBJASHVJAHSVFHJSAVJHFASHJVASHJVFAHJSFHVJJHASVHFJVSAVHASJSAHJGYUEHEVYAFAFASFASLJKHABSBASHFVASHJVFUAYSGYFUASGFYUVSAFVASYVFYASV"
+      Jwt__Issuer: "TaskPro.API"
+      Jwt__Audience: "TaskPro.Client"
+      Jwt__ExpirationMinutes: 60
+
+      Cors__AllowedOrigins__0: "http://localhost:3000"
+      Cors__AllowedOrigins__1: "http://localhost:3001"
+
+      ASPNETCORE_ENVIRONMENT: Production
+
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "TaskPro_Password_123"
+      MSSQL_PID: "Express"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa
+            -P "TaskPro_Password_123" -Q "SELECT 1" -b
+      interval: 10s
+      timeout:  5s
+      retries:  10
+
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+
+volumes:
+  sqlserver-data:
+  mongodb-data:

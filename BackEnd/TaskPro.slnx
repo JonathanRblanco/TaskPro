@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="TaskPro.API/TaskPro.API.csproj" />
+  <Project Path="TaskPro.Application/TaskPro.Application.csproj" />
+  <Project Path="TaskPro.Domain/TaskPro.Domain.csproj" />
+  <Project Path="TaskPro.Infraestructure/TaskPro.Infraestructure.csproj" />
+</Solution>
