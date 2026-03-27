@@ -1,7 +1,7 @@
 # ⚡ TaskPro
 
 **Autor:** Jonathan Blanco  
-**Repositorio:** `https://github.com/JonathanRblanco/TaskPro` ← _reemplazar con URL real_
+**Repositorio:** `https://github.com/JonathanRblanco/TaskPro`
 
 ---
 
@@ -76,7 +76,7 @@ Este es el método más simple. Un solo comando levanta **frontend, backend, SQL
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/taskpro.git
+git clone https://github.com/JonathanRblanco/TaskPro
 cd taskpro
 ```
 
@@ -122,10 +122,6 @@ cd FrontEnd
 
 # Instalar dependencias
 npm install
-
-# Crear archivo de variables de entorno
-cp .env.example .env.local
-# Editar .env.local con la URL del backend
 
 # Iniciar en modo desarrollo
 npm run dev
@@ -194,13 +190,6 @@ dotnet ef migrations add NombreDeLaMigracion \
 }
 ```
 
-### Frontend — `.env.local`
 
-```env
-# URL base de la API .NET (debe incluir /api al final)
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-
-```
-
-> En Docker, estas variables se configuran automáticamente a través del `docker-compose.yml` y no necesitas crear el `.env.local`.
+> En Docker, estas variables se configuran automáticamente a través del `docker-compose.yml`.
 
